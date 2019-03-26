@@ -7,7 +7,7 @@ class LogProcessor:
         # csv
         # user, scheme, logins, successes, failures, *Times
         # data
-        # user, scheme, succesVses, failures, lastLogin, *Times
+        # user, scheme, successes, failures, lastLogin, *Times
         self.userData = []
     
     # ['ast134', 'Text21', 15, 0, '2017-07-18 18:20:47', '0:00:16', '0:00:05', '0:00:05']
@@ -38,7 +38,6 @@ class LogProcessor:
             writer = csv.writer(f)
             writer.writerows(self.userData)
 
-    # TODO: calculate total logins after parse remove lasttime
     def record(self, user, scheme, checkType, time):
         index = self.recordSearch(user, scheme)
         if index == -1:
@@ -51,7 +50,8 @@ class LogProcessor:
         if checkType == "start":
             self.userData[index][4] = time
 
-        diffWords = ["goodLogin", "badLogin", "passwordSubmitted"]
+        # diffWords = ["goodLogin", "badLogin", "passwordSubmitted"]
+        diffWords = ["failure", "success"]
         if checkType in diffWords:
             diff = self.timeDiff(self.userData[index][4], time)
             self.userData[index].append(diff)
